@@ -17,19 +17,15 @@ jobs:
       run: echo "VERSION=$(git describe --tags)" >> $GITHUB_ENV 
 #     run: echo ::set-env name=VERSION::$(git describe --tags)
 
-    - name: Build
-      run: |
-        mkdir release
-        tar --exclude="./release" -cvzf release/release.tar.gz . 
-        mv release/release.tar.gz .
+        #    - name: Build
+        #run: |
+        #mkdir release
+        #tar --exclude="./release" -cvzf release/release.tar.gz . 
+        #mv release/release.tar.gz .
 
     - name: Create Release
-      uses: actions/create-release@v1
+      uses: elgohr/Github-Release-Action@v4
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
       with:
-        tag_name: ${{ env.VERSION }}
-        release_name: Release ${{ env.VERSION }}
-        draft: false
-        prerelease: false
-        files: release.tar.gz
+        title: The mighty release
