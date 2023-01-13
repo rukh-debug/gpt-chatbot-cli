@@ -18,10 +18,10 @@ jobs:
 #     run: echo ::set-env name=VERSION::$(git describe --tags)
 
     - name: Build
-        run: |
-          mkdir release
-          tar --exclude="./release" -cvzf release/release.tar.gz . 
-          mv release/release.tar.gz .
+      run: |
+        mkdir release
+        tar --exclude="./release" -cvzf release/release.tar.gz . 
+        mv release/release.tar.gz .
 
     - name: Create Release
       uses: "marvinpinto/action-automatic-releases@latest"
