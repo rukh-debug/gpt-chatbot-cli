@@ -32,6 +32,12 @@ presets = {
         "inject": {
             "state": False,
         }
+    },
+    "Custom": {
+        "message": "",
+        "inject": {
+            "state": False
+        }
     }
 }
 
@@ -66,8 +72,8 @@ try:
         start_string = presets[chosen_preset]["inject"]["start"]
     else:
         state = False
-        end_string = ">>>"
-        start_string = ">>>"
+        end_string = ">"
+        start_string = ">"
         
     # start chat loop
     while True:
@@ -77,7 +83,6 @@ try:
         if user_input.lower() in ["exitgpt","exit"]:
             break
         prompt = conversation_history + end_string + user_input + "\n" + start_string
-        
         # generate response
         response = openai.Completion.create(
             engine=model,
@@ -90,7 +95,7 @@ try:
         else:
             conversation_history = presets[chosen_preset]["message"]
         # print response with termcolor
-        print(start_string + termcolor.colored(f"{response.choices[0].text}", 'light_yellow'))
+        print(termcolor.colored(f"{start_string}{response.choices[0].text}", 'light_yellow'))
 
 except KeyboardInterrupt:
     print("Exiting...")
