@@ -24,14 +24,5 @@ jobs:
         mv release/release.tar.gz .
 
     - name: Create Release
-      uses: "marvinpinto/action-automatic-releases@latest"
-      env:
-        GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
-      with:
-        repo_token: "${{ secrets.GITHUB_TOKEN }}"
-        automatic_release_tag: ${{ env.VERSION }}
-        prerelease: false
-        title: "Production Build"
-        files: |
-          release.tar.gz  
+      uses: softprops/action-gh-release@v1
 
