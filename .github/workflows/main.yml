@@ -14,9 +14,8 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Get version
-      environment: 
-        name: production
-      run: echo ::set-env name=VERSION::$(git describe --tags)
+      run: echo "VERSION=$(git describe --tags)" 
+#     run: echo ::set-env name=VERSION::$(git describe --tags)
 
     - name: Build
       run: |
