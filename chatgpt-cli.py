@@ -21,19 +21,18 @@ presets = {
             "end": "Human:"
         },
     },
-    # currently state false mode should be fixed
-    # "Grammar Correction": {
-    #     "message": "Correct this to standard English:\n",
-    #     "inject": {
-    #         "state": False,
-    #     }
-    # },
-    # "Eli5": {
-    #     "message":"Summarize this for a second-grade student:\n",
-    #     "inject": {
-    #         "state": False,
-    #     }
-    # }
+    "Grammar Correction": {
+        "message": "Correct this to standard English:\n",
+        "inject": {
+            "state": False,
+        }
+    },
+    "Eli5": {
+        "message":"Summarize this for a second-grade student:\n",
+        "inject": {
+            "state": False,
+        }
+    }
 }
 
 # import api key
@@ -62,9 +61,11 @@ try:
         
     # Replace #END# and #START# with preset's end and start's string if available
     if "inject" in presets[chosen_preset] and presets[chosen_preset]["inject"]["state"]:
+        state = True
         end_string = presets[chosen_preset]["inject"]["end"]
         start_string = presets[chosen_preset]["inject"]["start"]
     else:
+        state = False
         end_string = ">>>"
         start_string = ">>>"
         
@@ -84,8 +85,10 @@ try:
             temperature=temperature,
             max_tokens=1024,
         )
-        conversation_history += end_string + user_input + "\n" + response.choices[0].text + "\n"
-        
+        if (state):
+            conversation_history += end_string + user_input + "\n" + response.choices[0].text + "\n"
+        else:
+            conversation_history = presets[chosen_preset]["message"]
         # print response with termcolor
         print(start_string + termcolor.colored(f"{response.choices[0].text}", 'light_yellow'))
 
