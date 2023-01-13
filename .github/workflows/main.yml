@@ -6,6 +6,7 @@ on:
       - '*'
 
 jobs:
+  environment: production
   build:
     runs-on: ubuntu-latest
 
