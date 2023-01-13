@@ -4,6 +4,9 @@ It's a very minimal cli prompt, where you can chat and keeping the conversation 
 
 ## Install
 
+Assuming you created a set env variable with key named `OPENAI_API_KEY`.
+If you don't have a api key [visit here](https://beta.openai.com/account/api-keys) and generate one.
+
 #### One command install
 
 ```bash
@@ -22,9 +25,6 @@ $ chmod +x /bin/chatgpt-cli
 ```
 
 ## Usage
-
-Assuming you created a `.env` file with correct `OPENAI_API_KEY` value.
-If you don't have a api key [visit here](https://beta.openai.com/account/api-keys) and generate one.
 
 ```bash
 $ chatgpt-cli
