@@ -7,12 +7,6 @@ It's a very minimal cli prompt, where you can chat and keeping the conversation 
 Assuming you created a set env variable with key named `OPENAI_API_KEY`.
 If you don't have a api key [visit here](https://beta.openai.com/account/api-keys) and generate one.
 
-#### One command install
-
-```bash
-$ ./install.sh
-```
-
 Archers, I got you covered
 Here is the AUR repo: [chatgpt-cli-git](https://aur.archlinux.org/packages/chatgpt-cli-git)
 
