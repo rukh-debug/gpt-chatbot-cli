@@ -3,6 +3,9 @@ import openai
 import os
 import termcolor
 from prompt_toolkit import prompt
+from prompt_toolkit.validation import Validator, ValidationError
+from prompt_toolkit.styles import Style
+
 
 presets = {
     "Q&A": {
@@ -41,9 +44,37 @@ presets = {
     }
 }
 
+def API_key_helper():
+    return [('class:bottom-toolbar', 'Set the environment variable OPENAI_API_KEY to avoid further prompts. ')]
+
+def chat_prompt_helper(on):
+    if(on == "chat"):
+        return [('class:bottom-toolbar', 'Chat like you are talking with an AI assistant. ')]
+    else:
+        return [('class:bottom-toolbar', 'Say something. ')]
+style = Style.from_dict({
+    'bottom-toolbar': '#ffff33 bg:#333333',
+})
+
+def check_api_key_validity(api_key, where):
+    if(where == "prompt"):
+        print("Found env variable OPENAI_API_KEY")
+    print("Checking for validity")
+    try:
+        openai.api_key = api_key
+        openai.Model.list()
+        print(termcolor.colored(f"API key is valid", 'light_green', attrs=["bold"]))
+    except openai.OpenAIError as e:
+        print(termcolor.colored(f"Invalid API key", 'light_red', attrs=["bold"]) + "\nGrab your API key from: "+termcolor.colored(f"https://beta.openai.com/account/api-keys", 'light_blue', attrs=["underline"]))
+        exit()
 # import api key
 api_key = os.environ.get("OPENAI_API_KEY")
-openai.api_key = api_key
+
+if not api_key:
+    api_key = prompt("Please enter your OpenAI API key: ", bottom_toolbar=API_key_helper, style=style)
+    check_api_key_validity(api_key, "not-prompt")
+else:
+    check_api_key_validity(api_key, "prompt")
 
 # set model and temperature
 model = "text-davinci-003"
@@ -55,9 +86,32 @@ conversation_history = ''
 try:
     # Ask user to pick a preset
     print("Please choose a preset:")
-    for preset in presets:
-        print(f"- {preset}")
-    chosen_preset = input("Preset: ")
+    
+    # Print the options
+    options = list(presets.keys())
+    print("Please select an option by number:")
+    for i, key in enumerate(options):
+        print(f"{i+1}: {key}")
+
+    # Validate user input
+    class NumberValidator(Validator):
+        def validate(self, document):
+            try:
+                value = int(document.text)
+                if value not in range(1, len(options) + 1):
+                    raise ValueError()
+            except ValueError:
+                raise ValidationError(
+                    message='Please enter a number between 1 and {}'.format(len(options)),
+                    cursor_position=len(document.text))
+
+    # Ask the user to pick an option
+    selected_num = prompt('Option: ', validator=NumberValidator())
+
+    # Get the selected option
+    selected_num = int(selected_num)
+    chosen_preset = list(presets.keys())[selected_num - 1]
+    
     # Append preset message to conversation_history
     if chosen_preset in presets:
         conversation_history += presets[chosen_preset]["message"]
@@ -78,6 +132,7 @@ try:
     # start chat loop
     while True:
         # get user input
+        # user_input = prompt(end_string + " ", bottom_toolbar=chat_prompt_helper("chat"), style=style)
         user_input = input(end_string + " ")
         
         if user_input.lower() in ["exitgpt","exit"]:
