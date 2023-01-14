@@ -13,7 +13,7 @@ presets = {
             "state": True,
             "start": "AI:",
             "end": "Human:"
-    },
+        },
     },
     "Q&A": {
         "message": "I am a highly intelligent question answering bot. If you ask me a question that is rooted in truth, I will give you the answer. If you ask me a question that is nonsense, trickery, or has no clear answer, I will respond with 'Unknown'.\n",
@@ -133,15 +133,14 @@ try:
     # start chat loop
     while True:
         # get user input
-        user_input = prompt(end_string + " ", bottom_toolbar=chat_prompt_helper(chosen_preset, presets[chosen_preset]["message"]), style=style)
-        
+        user_input = prompt(end_string, bottom_toolbar=chat_prompt_helper(chosen_preset, presets[chosen_preset]["message"]), style=style)
+
         if user_input.lower() in ["exitgpt","exit"]:
             break
-        prompt = conversation_history + end_string + user_input + "\n" + start_string
         # generate response
         response = openai.Completion.create(
             engine=model,
-            prompt=prompt,
+            prompt=conversation_history + end_string + user_input + "\n" + start_string,
             temperature=temperature,
             max_tokens=1024,
         )
