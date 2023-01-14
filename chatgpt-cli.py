@@ -6,22 +6,21 @@ from prompt_toolkit import prompt
 from prompt_toolkit.validation import Validator, ValidationError
 from prompt_toolkit.styles import Style
 
-
 presets = {
-    "Q&A": {
-        "message": "I am a highly intelligent question answering bot. If you ask me a question that is rooted in truth, I will give you the answer. If you ask me a question that is nonsense, trickery, or has no clear answer, I will respond with 'Unknown'.\n",
-        "inject": {
-            "state": True,
-            "start": "A:",
-            "end": "Q:"
-        },
-    },
     "Chat": {
         "message": "The following is a conversation with an AI assistant. The assistant is helpful, creative, clever, and very friendly.",
         "inject": {
             "state": True,
             "start": "AI:",
             "end": "Human:"
+    },
+    },
+    "Q&A": {
+        "message": "I am a highly intelligent question answering bot. If you ask me a question that is rooted in truth, I will give you the answer. If you ask me a question that is nonsense, trickery, or has no clear answer, I will respond with 'Unknown'.\n",
+        "inject": {
+            "state": True,
+            "start": "A:",
+            "end": "Q:"
         },
     },
     "Grammar Correction": {
@@ -43,17 +42,15 @@ presets = {
         }
     }
 }
+def api_key_helper():
+    return [('class:api-key-helper', 'Set the environment variable OPENAI_API_KEY to avoid further prompts. ')]
 
-def API_key_helper():
-    return [('class:bottom-toolbar', 'Set the environment variable OPENAI_API_KEY to avoid further prompts. ')]
+def chat_prompt_helper(on, message):
+        return [('class:chat-prompt-helper', "Mode: "+on+"\n"+message)]
 
-def chat_prompt_helper(on):
-    if(on == "chat"):
-        return [('class:bottom-toolbar', 'Chat like you are talking with an AI assistant. ')]
-    else:
-        return [('class:bottom-toolbar', 'Say something. ')]
 style = Style.from_dict({
-    'bottom-toolbar': '#ffff33 bg:#333333',
+    'api-key-helper': '#fc802d bg:#282828 bold',
+    'chat-prompt-helper': "#504945 bg:#fbf0c9 bold"
 })
 
 def check_api_key_validity(api_key, where):
@@ -71,8 +68,12 @@ def check_api_key_validity(api_key, where):
 api_key = os.environ.get("OPENAI_API_KEY")
 
 if not api_key:
-    api_key = prompt("Please enter your OpenAI API key: ", bottom_toolbar=API_key_helper, style=style)
-    check_api_key_validity(api_key, "not-prompt")
+    try:
+        api_key = prompt("Please enter your OpenAI API key: ", bottom_toolbar=api_key_helper, style=style)
+        check_api_key_validity(api_key, "not-prompt")
+    except KeyboardInterrupt:
+        print("Exiting...")
+        exit(0)
 else:
     check_api_key_validity(api_key, "prompt")
 
@@ -132,8 +133,7 @@ try:
     # start chat loop
     while True:
         # get user input
-        # user_input = prompt(end_string + " ", bottom_toolbar=chat_prompt_helper("chat"), style=style)
-        user_input = input(end_string + " ")
+        user_input = prompt(end_string + " ", bottom_toolbar=chat_prompt_helper(chosen_preset, presets[chosen_preset]["message"]), style=style)
         
         if user_input.lower() in ["exitgpt","exit"]:
             break
@@ -154,5 +154,5 @@ try:
 
 except KeyboardInterrupt:
     print("Exiting...")
-    exit()
+    exit(0)
 
