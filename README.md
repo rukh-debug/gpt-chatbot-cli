@@ -32,6 +32,3 @@ $ chmod +x /bin/chatgpt-cli
 ```bash
 $ chatgpt-cli
 ```
-
-## TODO
-[ ] Package this [reddit discussion](https://old.reddit.com/r/archlinux/comments/10bcyxr/i_created_a_aur_package_and_its_a_python_package/)
