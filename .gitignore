@@ -1,2 +1,6 @@
 .env
 .venv
+build
+gpt_chatbot_cli.egg-info
+dist
+```
