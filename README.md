@@ -16,3 +16,7 @@ $ pip3 install gpt-chatbot-cli
 ```bash
 $ gpt-chatbot-cli
 ```
+
+## Demo
+
+[![asciicast](https://asciinema.org/a/557311.svg)](https://asciinema.org/a/557311)
