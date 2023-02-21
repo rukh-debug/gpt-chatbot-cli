@@ -2,7 +2,7 @@ import setuptools
 
 setuptools.setup(
     name='gpt-chatbot-cli',
-    version="0.1.3",
+    version="0.2.0",
     description="chatgpt cli without any bloats.",
     author="Ruben Kharel",
     author_email="kharelruben@gmail.com",
