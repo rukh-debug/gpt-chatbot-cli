@@ -1,6 +1,6 @@
 # Chatgpt-cli
 
-It's a very minimal cli prompt, where you can chat and keeping the conversation session momoriable by chatgpt.
+It's a very minimal cli prompt, where you can chat and keeping the conversation session memorable by chatgpt.
 
 ## Install
 
