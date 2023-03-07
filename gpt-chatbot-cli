@@ -6,8 +6,13 @@ from prompt_toolkit import prompt
 from prompt_toolkit.validation import Validator, ValidationError
 from prompt_toolkit.styles import Style
 import click
+import time
 
-
+def print_char_by_char(start_string, text):
+    for char in start_string + text:
+        print(termcolor.colored(char, 'light_yellow'), end='', flush=True)
+        time.sleep(0.01)
+    print()
 
 presets = {
     "Chat": {
@@ -48,18 +53,19 @@ presets = {
 
 @click.command()
 @click.option('--api_key', help='Openai API key. If not provided, will prompt for it or use the environment variable OPENAI_API_KEY.')
-@click.option('--model', default='text-davinci-003', help='Model to use for text generation | (default: text-davinci-003)')
+@click.option('--model', default='gpt-3.5-turbo', help='Model to use for text generation | (default: gpt-3.5-turbo)')
 @click.option('--temperature', default=0.9, type=click.FLOAT, help='Temperature for text generation | (default: 0.9)')
 @click.help_option('--help', '-h')
 def generate_text(api_key, model, temperature):
     """
-    Generates text using the OpenAI API.
+    A CLI for OpenAI's GPT-3 API.
+    Chat with a bot, ask questions, correct grammar, summarize text, and more.
 
     \b
     Examples:
         gpt-chatbot-cli
         gpt-chatbot-cli --api_key=YOUR_API_KEY
-        gpt-chatbot-cli --api_key=YOUR_API_KEY --model=text-davinci-002 --temperature=0.7
+        gpt-chatbot-cli --api_key=YOUR_API_KEY --model=text-davinci-003 --temperature=0.7
     """
 
     def api_key_helper():
@@ -70,8 +76,10 @@ def generate_text(api_key, model, temperature):
             return [('class:chat-prompt-helper', "Mode: "+on+"\n"+message)]
 
     style = Style.from_dict({
+        # make a gruvbox theme for this
         'api-key-helper': '#fc802d bg:#282828 bold',
-        'chat-prompt-helper': "#504945 bg:#fbf0c9 bold"
+        # a compatable color for the prompt
+        'chat-prompt-helper': 'bg:#000000 #ffffff',
     })
 
     def check_api_key_validity(api_key, where):
@@ -83,7 +91,7 @@ def generate_text(api_key, model, temperature):
             openai.Model.list()
             print(termcolor.colored(f"API key is valid", 'light_green', attrs=["bold"]))
         except openai.OpenAIError as e:
-            print(termcolor.colored(f"Invalid API key", 'light_red', attrs=["bold"]) + "\nGrab your API key from: "+termcolor.colored(f"https://beta.openai.com/account/api-keys", 'light_blue', attrs=["underline"]))
+            print(termcolor.colored(f"Invalid API key", 'light_red', attrs=["bold"]) + "\nGrab your API key from: "+termcolor.colored(f"https://platform.openai.com/account/api-keys", 'light_blue', attrs=["underline"]))
             exit()
     # import api key
     openai_api_key = os.environ.get("OPENAI_API_KEY") or api_key
@@ -104,6 +112,7 @@ def generate_text(api_key, model, temperature):
 
     # Initialize conversation_history
     conversation_history = ''
+    messages = []
 
     try:
         # Ask user to pick a preset
@@ -137,6 +146,9 @@ def generate_text(api_key, model, temperature):
         # Append preset message to conversation_history
         if chosen_preset in presets:
             conversation_history += presets[chosen_preset]["message"]
+            messages.append({
+                "role": "system", "content": presets[chosen_preset]["message"]
+            })
         else:
             print("Invalid preset chosen, please try again.")
             exit()
@@ -159,18 +171,35 @@ def generate_text(api_key, model, temperature):
             if user_input.lower() in ["exitgpt","exit"]:
                 break
             # generate response
-            response = openai.Completion.create(
-                engine=lang_model,
-                prompt=conversation_history + end_string + user_input + "\n" + start_string,
-                temperature=config_temperature,
-                max_tokens=1024,
-            )
-            if (state):
-                conversation_history += end_string + user_input + "\n" + response.choices[0].text + "\n"
-            else:
-                conversation_history = presets[chosen_preset]["message"]
+            if lang_model == "gpt-3.5-turbo":
+                messages.append({
+                    "role": "user", "content": user_input
+                })
+                response = openai.ChatCompletion.create(
+                    model=lang_model,
+                    messages=messages,
+                )
+                print(response)
+                print_char_by_char(start_string, response.choices[0].message.content)
+                # print(termcolor.colored(f"{start_string}{response.choices[0].message.content}", 'light_yellow'))
+                messages.append(response.choices[0].message)
+            else: 
+                response = openai.Completion.create(
+                    engine=lang_model,
+                    prompt=conversation_history + end_string + user_input + "\n" + start_string,
+                    temperature=config_temperature,
+                    max_tokens=1024,
+                )
+                print(response)
+                if (state):
+                    conversation_history += end_string + user_input + "\n" + response.choices[0].text + "\n"
+                else:
+                    conversation_history = presets[chosen_preset]["message"]
+                print_char_by_char(start_string, response.choices[0].text)
+                # print(termcolor.colored(f"{start_string}{response.choices[0].text}", 'light_yellow'))
+
             # print response with termcolor
-            print(termcolor.colored(f"{start_string}{response.choices[0].text}", 'light_yellow'))
+            # console.log(response)
 
     except Exception as e:
         print(termcolor.colored(f"Error: {e}", 'light_red'))
