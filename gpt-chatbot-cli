@@ -179,7 +179,7 @@ def generate_text(api_key, model, temperature):
                     model=lang_model,
                     messages=messages,
                 )
-                print(response)
+                # print(response)
                 print_char_by_char(start_string, response.choices[0].message.content)
                 # print(termcolor.colored(f"{start_string}{response.choices[0].message.content}", 'light_yellow'))
                 messages.append(response.choices[0].message)
@@ -190,7 +190,7 @@ def generate_text(api_key, model, temperature):
                     temperature=config_temperature,
                     max_tokens=1024,
                 )
-                print(response)
+                # print(response)
                 if (state):
                     conversation_history += end_string + user_input + "\n" + response.choices[0].text + "\n"
                 else:
