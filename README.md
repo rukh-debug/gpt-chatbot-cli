@@ -7,6 +7,7 @@ It's a very minimal cli prompt, where you can chat and keeping the conversation 
 Assuming you created a set env variable with key named `OPENAI_API_KEY`.
 If you don't have a api key [visit here](https://platform.openai.com/account/api-keys) and generate one.
 
+
 ```
 $ pip3 install gpt-chatbot-cli
 ```
