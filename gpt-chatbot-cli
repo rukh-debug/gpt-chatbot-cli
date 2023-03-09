@@ -115,12 +115,10 @@ def generate_text(api_key, model, temperature):
     messages = []
 
     try:
-        # Ask user to pick a preset
-        print("Please choose a preset:")
-        
+        # Ask user to pick a preset        
         # Print the options
         options = list(presets.keys())
-        print("Please select an option by number:")
+        print("Please select an preset by number:")
         for i, key in enumerate(options):
             print(f"{i+1}: {key}")
 
