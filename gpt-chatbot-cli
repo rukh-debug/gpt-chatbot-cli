@@ -8,48 +8,14 @@ from prompt_toolkit.styles import Style
 import click
 import time
 
+from src.payloads import presets
+
 def print_char_by_char(start_string, text):
-    for char in start_string + text:
+    print(start_string, end=" ")
+    for char in text:
         print(termcolor.colored(char, 'light_yellow'), end='', flush=True)
         time.sleep(0.01)
     print()
-
-presets = {
-    "Chat": {
-        "message": "The following is a conversation with an AI assistant. The assistant is helpful, creative, clever, and very friendly.",
-        "inject": {
-            "state": True,
-            "start": "AI:",
-            "end": "Human:"
-        },
-    },
-    "Q&A": {
-        "message": "I am a highly intelligent question answering bot. If you ask me a question that is rooted in truth, I will give you the answer. If you ask me a question that is nonsense, trickery, or has no clear answer, I will respond with 'Unknown'.\n",
-        "inject": {
-            "state": True,
-            "start": "A:",
-            "end": "Q:"
-        },
-    },
-    "Grammar Correction": {
-        "message": "Correct this to standard English:\n",
-        "inject": {
-            "state": False,
-        }
-    },
-    "Eli5": {
-        "message":"Summarize this for a second-grade student:\n",
-        "inject": {
-            "state": False,
-        }
-    },
-    "Custom": {
-        "message": "",
-        "inject": {
-            "state": False
-        }
-    }
-}
 
 @click.command()
 @click.option('--api_key', help='Openai API key. If not provided, will prompt for it or use the environment variable OPENAI_API_KEY.')
@@ -173,14 +139,17 @@ def generate_text(api_key, model, temperature):
                 messages.append({
                     "role": "user", "content": user_input
                 })
+                
                 response = openai.ChatCompletion.create(
                     model=lang_model,
                     messages=messages,
                 )
                 # print(response)
                 print_char_by_char(start_string, response.choices[0].message.content)
-                # print(termcolor.colored(f"{start_string}{response.choices[0].message.content}", 'light_yellow'))
-                messages.append(response.choices[0].message)
+                messages.append({
+                    "role": response.choices[0].message.role, "content": response.choices[0].message.content
+                })
+                # print(messages)
             else: 
                 response = openai.Completion.create(
                     engine=lang_model,
@@ -194,10 +163,7 @@ def generate_text(api_key, model, temperature):
                 else:
                     conversation_history = presets[chosen_preset]["message"]
                 print_char_by_char(start_string, response.choices[0].text)
-                # print(termcolor.colored(f"{start_string}{response.choices[0].text}", 'light_yellow'))
 
-            # print response with termcolor
-            # console.log(response)
 
     except Exception as e:
         print(termcolor.colored(f"Error: {e}", 'light_red'))
