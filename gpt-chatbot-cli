@@ -6,10 +6,10 @@ from prompt_toolkit.styles import Style
 import click
 
 from src.payloads import presets, chat_complitions_models
-from src.database import init_chat_history, update_chat_history
+from src.database import init_chat_history, update_chat_history, defind_chat_title
 from src.history import chat_history_picker
 from src.services import print_char_by_char, print_whole_but_color
-from src.openapi_controller import check_api_key_validity, chat_api_call
+from src.openapi_controller import check_api_key_validity, chat_api_call, title_gen
 
 @click.command()
 @click.option('--api_key', '-k', help='Openai API key. If not provided, will prompt for it or use the environment variable OPENAI_API_KEY.')
@@ -133,7 +133,10 @@ def generate_text(api_key, model, temperature, preset, history):
                 
 
             user_input = prompt(end_string + " ", bottom_toolbar=chat_prompt_helper(chosen_preset, presets[chosen_preset]["message"]), style=style)
-            
+            if (count == 0 and not history):
+                title = title_gen(user_input)
+                defind_chat_title(_id, title)
+                
             if user_input.lower() in [":q","exit", ":wq", "exitgpt", "exit()"]:
                 break
 

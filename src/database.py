@@ -7,7 +7,7 @@ def init_chat_history(message, preset, model):
   # generate random string
   _id = str(time.time()).replace(".", "")
   # print("Saving chat history...")
-  db.insert({"_id": _id, "preset": preset, 'messages': message, "model": model})
+  db.insert({"_id": _id, "preset": preset, "model": model, 'messages': message})
   return _id
 
 def update_chat_history(id, message):

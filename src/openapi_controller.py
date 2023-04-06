@@ -34,3 +34,17 @@ def chat_api_call(engine, messages, temperature=None, max_tokens=None):
       max_tokens=max_tokens,
     )
     return response
+
+def title_gen(init_text_input):
+  messages = [{
+     "role": "system", "content": "You are a title generator, You are given a text input from a user, and according to that text input you will figure out the context of the chat and generate a very short title, maximum 4,5 word of length"
+  }]
+  messages.append({
+    "role": "user",
+    "content": init_text_input
+  })
+  response = openai.ChatCompletion.create(
+      model="gpt-3.5-turbo",
+      messages=messages,
+  )
+  return response["choices"][0]["message"]["content"]
