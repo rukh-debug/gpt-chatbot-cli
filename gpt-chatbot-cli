@@ -8,6 +8,10 @@ from prompt_toolkit.styles import Style
 import click
 import time
 
+from tinydb import TinyDB, Query
+
+db = TinyDB('db/gpt_chatbot_chat_history.json')
+
 from src.payloads import presets, chat_complitions_models
 
 def print_char_by_char(start_string, text):
@@ -18,11 +22,12 @@ def print_char_by_char(start_string, text):
     print()
 
 @click.command()
-@click.option('--api_key', help='Openai API key. If not provided, will prompt for it or use the environment variable OPENAI_API_KEY.')
-@click.option('--model', default='gpt-3.5-turbo', help='Model to use for text generation | (default: gpt-3.5-turbo)')
-@click.option('--temperature', default=0.9, type=click.FLOAT, help='Temperature for text generation | (default: 0.9)')
+@click.option('--api_key', '-k', help='Openai API key. If not provided, will prompt for it or use the environment variable OPENAI_API_KEY.')
+@click.option('--model', '-m', default='gpt-3.5-turbo', help='Model to use for text generation | (default: gpt-3.5-turbo)')
+@click.option('--temperature', '-t', default=0.9, type=click.FLOAT, help='Temperature for text generation | (default: 0.9)')
+@click.option('--preset', '-p', default='chat', help='Preset mode to use for text generation | (default: Chat) \nAvailable presets: Chat, Q&A, Grammar Correction, Eli5, Custom')
 @click.help_option('--help', '-h')
-def generate_text(api_key, model, temperature):
+def generate_text(api_key, model, temperature, preset):
     """
     A CLI for OpenAI's GPT-3 API.
     Chat with a bot, ask questions, correct grammar, summarize text, and more.
@@ -81,33 +86,18 @@ def generate_text(api_key, model, temperature):
     messages = []
 
     try:
-        # Ask user to pick a preset        
-        # Print the options
-        options = list(presets.keys())
-        print("Please select an preset by number:")
-        for i, key in enumerate(options):
-            print(f"{i+1}: {key}")
-
-        # Validate user input
-        class NumberValidator(Validator):
-            def validate(self, document):
-                try:
-                    value = int(document.text)
-                    if value not in range(1, len(options) + 1):
-                        raise ValueError()
-                except ValueError:
-                    raise ValidationError(
-                        message='Please enter a number between 1 and {}'.format(len(options)),
-                        cursor_position=len(document.text))
-
-        # Ask the user to pick an option
-        selected_num = prompt('Option: ', validator=NumberValidator())
-
-        # Get the selected option
-        selected_num = int(selected_num)
-        chosen_preset = list(presets.keys())[selected_num - 1]
+        chosen_preset = preset
+        # replace chosen_preset with preset's actual name keeping the case
         
-        # Append preset message to conversation_history
+        # create a list of lowercase keys from presets dictionary
+        preset_keys = [key.lower() for key in presets.keys()]
+        
+        # find the index of the lowercase version of chosen_preset
+        index = preset_keys.index(chosen_preset.lower())
+        
+        # get the actual key name from presets dictionary using the index
+        chosen_preset = list(presets.keys())[index]
+
         if chosen_preset in presets:
             conversation_history += presets[chosen_preset]["message"]
             messages.append({
@@ -137,7 +127,6 @@ def generate_text(api_key, model, temperature):
 
 
             if lang_model in chat_complitions_models:
-                print("Using chat completion")
                 messages.append({
                     "role": "user", "content": user_input
                 })
@@ -153,7 +142,6 @@ def generate_text(api_key, model, temperature):
                 })
                 # print(messages)
             else: 
-                print("Using completion")
                 response = openai.Completion.create(
                     engine=lang_model,
                     prompt=conversation_history + end_string + user_input + "\n" + start_string,
