@@ -8,7 +8,7 @@ from prompt_toolkit.styles import Style
 import click
 import time
 
-from src.payloads import presets
+from src.payloads import presets, chat_complitions_models
 
 def print_char_by_char(start_string, text):
     print(start_string, end=" ")
@@ -134,8 +134,10 @@ def generate_text(api_key, model, temperature):
 
             if user_input.lower() in ["exitgpt","exit"]:
                 break
-            # generate response
-            if lang_model == "gpt-3.5-turbo":
+
+
+            if lang_model in chat_complitions_models:
+                print("Using chat completion")
                 messages.append({
                     "role": "user", "content": user_input
                 })
@@ -151,6 +153,7 @@ def generate_text(api_key, model, temperature):
                 })
                 # print(messages)
             else: 
+                print("Using completion")
                 response = openai.Completion.create(
                     engine=lang_model,
                     prompt=conversation_history + end_string + user_input + "\n" + start_string,
