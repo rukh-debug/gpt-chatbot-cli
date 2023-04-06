@@ -2,7 +2,7 @@ import setuptools
 
 setuptools.setup(
     name='gpt-chatbot-cli',
-    version="0.2.2",
+    version="0.3.0",
     description="chatgpt cli without any bloats.",
     author="Ruben Kharel",
     author_email="kharelruben@gmail.com",
@@ -11,9 +11,11 @@ setuptools.setup(
     scripts=['gpt-chatbot-cli'],
     packages=setuptools.find_packages(),
     install_requires=[
-        'openai==0.27.1',
-        'prompt_toolkit==3.0.36',
+        'openai==0.27.4',
+        'prompt-toolkit==3.0.38',
         'termcolor==2.2.0',
+        'tinydb==4.7.1',
+        'click==8.1.3'
     ],
     classifiers=[
         'Development Status :: 3 - Alpha',

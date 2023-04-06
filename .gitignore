@@ -3,6 +3,7 @@
 build
 gpt_chatbot_cli.egg-info
 dist
+db/*
 ```
 # Byte-compiled / optimized / DLL files
 __pycache__/

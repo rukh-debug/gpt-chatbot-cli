@@ -26,15 +26,19 @@ Usage: gpt-chatbot-cli [OPTIONS]
       gpt-chatbot-cli
       gpt-chatbot-cli --api_key=YOUR_API_KEY
       gpt-chatbot-cli --api_key=YOUR_API_KEY --model=text-davinci-003 --temperature=0.7
+      gpt-chatbot-cli -m gpt-4 -t 0.8 -p "q&a"
 
 Options:
-  --api_key TEXT       Openai API key. If not provided, will prompt for it or
-                       use the environment variable OPENAI_API_KEY.
-  --model TEXT         Model to use for text generation | (default:
-                       gpt-3.5-turbo)
-  --temperature FLOAT  Temperature for text generation | (default: 0.9)
-  -h, --help           Show this message and exit.
-
+  -k, --api_key TEXT       Openai API key. If not provided, will prompt for it
+                           or use the environment variable OPENAI_API_KEY.
+  -m, --model TEXT         Model to use for text generation | (default:
+                           gpt-3.5-turbo)
+  -t, --temperature FLOAT  Temperature for text generation | (default: 0.9)
+  -p, --preset TEXT        Preset mode to use for text generation | (default:
+                           Chat)  Available presets: Chat, Q&A, Grammar
+                           Correction, Eli5, Custom
+  -hs, --history           Show chat history | (default: False)
+  -h, --help               Show this message and exit.
 ```
 
 
