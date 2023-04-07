@@ -49,4 +49,4 @@ Options:
 
 ## Demo
 
-[![asciicast](https://asciinema.org/a/uJSqTyzTX4QReLyHE3CMXRogM.svg)](https://asciinema.org/a/uJSqTyzTX4QReLyHE3CMXRogM)
+[![asciicast](https://asciinema.org/a/9L0MjDExrMFb0XhBbqYaXBBWL.svg)](https://asciinema.org/a/9L0MjDExrMFb0XhBbqYaXBBWL)
