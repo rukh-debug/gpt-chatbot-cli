@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "gpt-chatbot-cli"
-version = "0.3.3"
+version = "0.3.4"
 authors = [
   { name="Ruben Kharel", email="talkto@rubenk.com.np" },
 ]
