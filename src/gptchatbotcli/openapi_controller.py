@@ -1,7 +1,7 @@
 import openai
 import termcolor
 
-from src.payloads import chat_complitions_models
+from gptchatbotcli.payloads import chat_complitions_models
 
 
 def check_api_key_validity(api_key, where):

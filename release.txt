@@ -1,0 +1,9 @@
+# Build
+python -m build
+
+# instll locally to test
+python -m pip install dist/whatever.whl 
+python -m pip install dist/whatever.tar
+
+# publish
+twine upload dist/* --verbos

@@ -1,7 +1,13 @@
 from tinydb import TinyDB, Query
 import time
+import os
 
-db = TinyDB('db/gpt_chatbot_chat_history.json')
+home_dir = os.path.expanduser("~")
+chat_history_path = os.path.join(home_dir, ".gpt_chatbot_chat_history.json")
+if not os.path.exists(chat_history_path):
+  with open(chat_history_path, "x") as f:
+    f.write("")
+db = TinyDB(chat_history_path)
 
 def init_chat_history(message, preset, model):
   # generate random string

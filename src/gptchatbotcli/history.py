@@ -1,4 +1,4 @@
-from src.database import get_all_chat_history
+from gptchatbotcli.database import get_all_chat_history
 
 def chat_history_picker():
   chat_history = get_all_chat_history()

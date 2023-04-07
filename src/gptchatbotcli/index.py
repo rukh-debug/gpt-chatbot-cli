@@ -5,11 +5,11 @@ from prompt_toolkit import prompt
 from prompt_toolkit.styles import Style
 import click
 
-from src.payloads import presets, chat_complitions_models
-from src.database import init_chat_history, update_chat_history, defind_chat_title
-from src.history import chat_history_picker
-from src.services import print_char_by_char, print_whole_but_color
-from src.openapi_controller import check_api_key_validity, chat_api_call, title_gen
+from gptchatbotcli.payloads import presets, chat_complitions_models
+from gptchatbotcli.database import init_chat_history, update_chat_history, defind_chat_title
+from gptchatbotcli.history import chat_history_picker
+from gptchatbotcli.services import print_char_by_char, print_whole_but_color
+from gptchatbotcli.openapi_controller import check_api_key_validity, chat_api_call, title_gen
 
 @click.command()
 @click.option('--api_key', '-k', help='Openai API key. If not provided, will prompt for it or use the environment variable OPENAI_API_KEY.')
@@ -18,7 +18,7 @@ from src.openapi_controller import check_api_key_validity, chat_api_call, title_
 @click.option('--preset', '-p', default='chat', help='Preset mode to use for text generation | (default: Chat) \nAvailable presets: Chat, Q&A, Grammar Correction, Eli5, Custom')
 @click.option('--history', '-hs', default=False, is_flag=True, help='Show chat history | (default: False)')
 @click.help_option('--help', '-h')
-def generate_text(api_key, model, temperature, preset, history):
+def main(api_key, model, temperature, preset, history):
     """
     A CLI for OpenAI's GPT-3 API.
     Chat with a bot, ask questions, correct grammar, summarize text, and more.
@@ -171,4 +171,4 @@ def generate_text(api_key, model, temperature, preset, history):
 
 
 if __name__ == '__main__':
-    generate_text()
+    main()

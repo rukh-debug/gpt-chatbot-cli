@@ -4,9 +4,14 @@ It's a very minimal cli prompt, where you can chat and keeping the conversation 
 
 ## Install
 
-Assuming you created a set env variable with key named `OPENAI_API_KEY`.
+Assuming you created a env variable with key named `OPENAI_API_KEY`.
 If you don't have a api key [visit here](https://platform.openai.com/account/api-keys) and generate one.
 
+```
+vim ~/.bashrc
+exports OPENAI_API_KEY=<YOUR OPENAI API KEY>
+```
+---
 
 ```
 $ pip3 install gpt-chatbot-cli
@@ -37,7 +42,7 @@ Options:
   -p, --preset TEXT        Preset mode to use for text generation | (default:
                            Chat)  Available presets: Chat, Q&A, Grammar
                            Correction, Eli5, Custom
-  -hs, --history           Show chat history | (default: False)
+  -hs, --history           Show chat history picker | (default: False)
   -h, --help               Show this message and exit.
 ```
 
