@@ -18,7 +18,9 @@ export OPENAI_API_KEY=<YOUR OPENAI API KEY>
 ```
 Be sure to replace <YOUR OPENAI API KEY> with your actual API key. Then, source the file using:
 
-then source the file using `source ~/.bashrc` or `source ~/.zshrc`
+Finally source the file using `source ~/.bashrc` or `source ~/.zshrc`
+
+
 -
 
 Finally, install the package using pip:
@@ -31,7 +33,7 @@ $ pip3 install gpt-chatbot-cli
 
 Once you have installed ChatGPT-CLI, you can run it by typing:
 ```bash
-gpt-chatbot-cli
+$ gpt-chatbot-cli
 ```
 
 This will start the CLI prompt, and you can begin chatting with the AI bot.
