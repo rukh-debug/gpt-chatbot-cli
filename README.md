@@ -18,15 +18,21 @@ export OPENAI_API_KEY=<YOUR OPENAI API KEY>
 ```
 Be sure to replace <YOUR OPENAI API KEY> with your actual API key. Then, source the file using:
 
-Finally source the file using `source ~/.bashrc` or `source ~/.zshrc`
+Lastly source the file using `source ~/.bashrc` or `source ~/.zshrc`
 
 
--
+---
 
-Finally, install the package using pip:
+You may now install the package using pip:
 
 ```bash
 $ pip3 install gpt-chatbot-cli
+```
+
+For arch users, this exact package is available on [aur](https://aur.archlinux.org/packages/chatgpt-cli-git) by the name chatgpt-cli-git
+
+```bash
+$ paru chatgpt-cli-git
 ```
 
 ## Usage
