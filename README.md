@@ -75,16 +75,6 @@ ChatGPT-CLI depends on the following Python packages:
 - tinyDB
 - click
 
-## License
-
-MIT
-
-## Author
-
-[![Twitter Follow](https://img.shields.io/twitter/follow/getrubenk?style=social)](https://twitter.com/getrubenk)
-
-[![GitHub followers](https://img.shields.io/github/followers/slithery0?style=social)](https://github.com/slithery0)
-
 ## Contributing
 
 Contributions are welcome! Please read the [contributing guidelines](CONTRIBUTING.md) first.
