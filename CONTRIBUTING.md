@@ -4,7 +4,7 @@ Thank you for your interest in contributing to gpt-chatbot-cli! Please take a mo
 
 ## Reporting Issues
 
-If you find a bug or have a feature request, please open an issue on the [GitHub issue tracker](https://github.com/slithery0/gpt-chatbot-cli/issues). Please include as much information as possible.
+If you find a bug or have a feature request, please open an issue on the [GitHub issue tracker](https://github.com/rukh-debug/gpt-chatbot-cli/issues). Please include as much information as possible.
 
 ## Contributing Code
 
@@ -15,7 +15,7 @@ If you would like to contribute code to gpt-chatbot-cli, please follow these ste
 3. Create a new branch for your changes
 4. Make your changes and commit them
 5. Push your changes to your fork
-6. Open a pull request on the [GitHub repository](https://github.com/slithery0/gpt-chatbot-cli/) and describe your changes
+6. Open a pull request on the [GitHub repository](https://github.com/rukh-debug/gpt-chatbot-cli/) and describe your changes
 
 ## License
 

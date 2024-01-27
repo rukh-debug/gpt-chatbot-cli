@@ -30,8 +30,8 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/slithery0/gpt-chatbot-cli"
-"Bug Tracker" = "https://github.com/slithery0/gpt-chatbot-cli/issues"
+Homepage = "https://github.com/rukh-debug/gpt-chatbot-cli"
+"Bug Tracker" = "https://github.com/rukh-debug/gpt-chatbot-cli/issues"
 
 [project.scripts]
 gpt-chatbot-cli = "gptchatbotcli.index:main"
